@@ -1,13 +1,23 @@
-use std::fs::{self, File};
-use std::io::{self, Read};
+use clap::Parser;
+use std::fs::{self};
+use std::io::{self};
 use std::path::Path;
 
+#[derive(Parser)]
+struct Cli {
+    /// The path of the project
+    path: String,
+}
+
 fn main() -> Result<(), io::Error> {
+    let args = Cli::parse();
+
+    let dir_path = Path::new(&args.path);
+
     let mut lines = 0;
     let mut characters = 0;
 
     // Path to the directory
-    let dir_path = Path::new("./../code_count/src");
 
     // Walk through the directory and its subdirectories
     for entry in fs::read_dir(dir_path)? {
@@ -26,8 +36,8 @@ fn main() -> Result<(), io::Error> {
     }
 
     // Print the results
-    println!("Lines: {}", lines);
-    println!("Characters: {}", characters);
+    println!("Your Project contains {} lines of code", lines);
+    println!("Your project contains {} characters", characters);
 
     Ok(())
 }
